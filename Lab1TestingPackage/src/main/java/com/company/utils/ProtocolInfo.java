@@ -1,4 +1,4 @@
-package com.company;
+package com.company.utils;
 
 public class ProtocolInfo {
 
@@ -8,7 +8,7 @@ public class ProtocolInfo {
     public static final int O_PKTID = 2;
     public static final int O_LEN = 10;
     public static final int O_CRC_0_13 = 14;
-    public static final int O_MESSAGE = 16;
-    //public final int oCRC_16_end = 16+packetLength;
+    public static final int O_MESSAGE = 18;
+    //public final int oCRC_16_end = 18+packetLength;
 
 }

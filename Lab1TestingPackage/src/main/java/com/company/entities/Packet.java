@@ -1,12 +1,14 @@
 package com.company.entities;
 
-import com.company.ProtocolInfo;
+import com.company.utils.CRC16;
+import com.company.utils.ProtocolInfo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class Packet {
     private static final byte bMagic = 0x13;
@@ -16,14 +18,14 @@ public class Packet {
     private int packetLength;
 
     /**
-     * @param src unique number of client app, must be 1 byte (This is a task)
-     * @param cType code of command
+     * @param src     unique number of client app, must be 1 byte (This is a task)
+     * @param cType   code of command
      * @param bUserId user id
      * @param message payload to send
      */
-    public Packet(final int src, final int cType, final int bUserId, final Serializable message){
-            //in future there will be Message created by PacketCreator class
-        try{
+    public Packet(final int src, final int cType, final int bUserId, final Serializable message) {
+        //in future there will be Message created by PacketCreator class
+        try {
             if (src > 255)
                 throw new IllegalArgumentException("Unique number of client must be less than 1 byte");
             packetLength = 18; // + message length in future
@@ -32,13 +34,8 @@ public class Packet {
 
             data = fillData(src);
             pcktId++;
-        }
-        catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } catch (BufferOverflowException e2) {
-            e2.printStackTrace();
         }
     }
 
@@ -47,11 +44,9 @@ public class Packet {
         ByteBuffer bb = ByteBuffer.allocate(2);
         baos.write(bb.put(bMagic).array());
         baos.write(bb.put((byte) src).array());
-        //bb.clear();
 
         bb = ByteBuffer.allocate(8);
         baos.write(bb.putLong(pcktId).array());
-        //bb.clear();
 
         bb = ByteBuffer.allocate(4);
         byte[] messageBytes = this.message.getBytes();
@@ -59,14 +54,17 @@ public class Packet {
         packetLength += messageLength;
         baos.write(bb.putInt(packetLength).array());
 
-        bb = ByteBuffer.allocate(2);
-        //baos.write(crc16
+        bb = ByteBuffer.allocate(4);
+        byte[] arr_0_13 = Arrays.copyOfRange(baos.toByteArray(), 0, ProtocolInfo.O_CRC_0_13);
+        baos.write(bb.putInt(CRC16.get_CRC16(arr_0_13)).array());
 
         bb = ByteBuffer.allocate(messageLength);
         baos.write(bb.put(messageBytes).array());
 
-        bb = ByteBuffer.allocate(2);
-        //baos.write(crc16
+        bb = ByteBuffer.allocate(4);
+        byte[] arr_toEnd = Arrays.copyOfRange(baos.toByteArray(), ProtocolInfo.O_MESSAGE,
+                ProtocolInfo.O_MESSAGE + messageLength);
+        baos.write(bb.putInt(CRC16.get_CRC16(arr_toEnd)).array());
 
         return baos.toByteArray();
     }
@@ -74,6 +72,7 @@ public class Packet {
     public static long getPcktId() {
         return pcktId;
     }
+
     public byte[] getData() {
         return data;
     }
