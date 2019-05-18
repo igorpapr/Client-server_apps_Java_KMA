@@ -3,7 +3,6 @@ package com.company.managers;
 import com.company.utils.CRC16;
 import com.company.utils.ProtocolInfo;
 
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class PacketReceiver {
@@ -14,30 +13,34 @@ public class PacketReceiver {
     }
 
     public boolean checkSums() {
-        return isCorrectMessage() && isCorrectPackageMeta();
+        return isCorrectPackageMeta() && isCorrectMessage();
+    }
+
+    private boolean isCorrectCRC(int from, int crcOffset){
+        int afterCRC_16 = CRC16.get_CRC16(Arrays.copyOfRange(bytearray, from, crcOffset));
+        int beforeCRC_16 = decode(Arrays.copyOfRange(bytearray,crcOffset,crcOffset + 4));
+        System.out.println("After CRC = " + afterCRC_16);
+        System.out.println("Before CRC = " + beforeCRC_16);
+        return (afterCRC_16 == beforeCRC_16);
     }
 
     private boolean isCorrectPackageMeta() {
-        byte[] packageMeta = Arrays.copyOfRange(bytearray, 0, ProtocolInfo.O_CRC_0_13);
-        int afterCRC_16 = CRC16.get_CRC16(packageMeta);
+        return isCorrectCRC(0, ProtocolInfo.O_CRC_0_13);
+    }
 
-        byte[] beforeCRC_16 = Arrays.copyOfRange(bytearray, ProtocolInfo.O_CRC_0_13, ProtocolInfo.O_CRC_0_13 + 4);
-        return decode(beforeCRC_16) == afterCRC_16;
+    private boolean isCorrectMessage() {
+        return isCorrectCRC(ProtocolInfo.O_MESSAGE, ProtocolInfo.O_MESSAGE + getMessageLength());
+    }
+
+    public int getMessageLength() {
+        byte[] messageLengthBytes = Arrays.copyOfRange(bytearray, ProtocolInfo.O_LEN, ProtocolInfo.O_CRC_0_13);
+        return decode(messageLengthBytes);
     }
 
     private static int decode(byte[] bi) {
         return bi[3] & 0xFF | (bi[2] & 0xFF) << 8 |
                 (bi[1] & 0xFF) << 16 | (bi[0] & 0xFF) << 24;
     }
-
-    private byte[] sliceOfBytes(byte[] src, int from, int to){
-        return Arrays.copyOfRange(src, from, to);
-    }
-
-    private boolean isCorrectMessage() {
-        return true;
-    }
-
 
     public byte[] getBytearray() {
         return bytearray;

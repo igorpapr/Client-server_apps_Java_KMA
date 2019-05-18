@@ -60,7 +60,7 @@ public class Packet {
         System.out.println("Message Length = " + messageLength);
         packetLength += messageLength;
         packetLength += 12; //CRCs and size of packetLength by itself - in future
-        baos.write(bb.putInt(packetLength).array());
+        baos.write(bb.putInt(messageLength).array());
         System.out.println("Packet Length = " + packetLength);
 
         bb = ByteBuffer.allocate(4);
