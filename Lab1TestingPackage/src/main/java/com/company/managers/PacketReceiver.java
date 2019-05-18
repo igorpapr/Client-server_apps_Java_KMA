@@ -1,15 +1,26 @@
 package com.company.managers;
 
 import com.company.utils.CRC16;
+import com.company.utils.Encryptor;
 import com.company.utils.ProtocolInfo;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class PacketReceiver {
     private byte[] bytearray;
+    private String message;
 
-    public PacketReceiver(final byte[] packet) {
+    public PacketReceiver(final byte[] packet) throws IllegalBlockSizeException, InvalidKeyException,
+            BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
         this.bytearray = packet;
+        this.message = Arrays.toString(Encryptor.decrypt(Arrays.copyOfRange(bytearray,ProtocolInfo.O_MESSAGE,
+                ProtocolInfo.O_MESSAGE +getMessageLength())));
+        //System.out.println(message);
     }
 
     public boolean checkSums() {

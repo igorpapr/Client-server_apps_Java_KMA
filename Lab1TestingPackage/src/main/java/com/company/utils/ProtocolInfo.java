@@ -1,7 +1,7 @@
 package com.company.utils;
 
 public class ProtocolInfo {
-    //OFFSETS ("o" stands for "offset")
+    //OFFSETS
     /**
      * Offset of magic number (13h)
      */

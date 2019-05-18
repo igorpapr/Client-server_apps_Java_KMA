@@ -5,7 +5,6 @@ import com.company.utils.ProtocolInfo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -24,12 +23,11 @@ public class Packet {
      * @param bUserId user id
      * @param message payload to send
      */
-    public Packet(int src, final int cType, final int bUserId, final Serializable message) {
+    public Packet(int src, final int cType, final int bUserId, final String message) {//Serializable message
         //in future there will be Message created by PacketCreator class
         try {
             if (src > 255)
                 throw new IllegalArgumentException("Unique number of client must be less than 1 byte");
-            //packetLength = 22; // + message length in future
             this.src = src;
             this.message = new Message(cType, bUserId, message); //in future there will be Message created by PacketCreator class
 
