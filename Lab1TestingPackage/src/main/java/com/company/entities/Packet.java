@@ -1,18 +1,12 @@
 package com.company.entities;
 
-public class Packet {
+import com.company.ProtocolInfo;
 
-    //OFFSETS ("o" stands for "offset")
-//    private static final int oMagic = 0;
-//    private static final int oSrc = 1;
-//    private static final int oPktId = 2;
-//    private static final int oLen = 10;
-//    private static final int oCRC_0_13 = 14;
-//    private static final int oMessage = 16;
-//    private final int oCRC_16_end = 16;
+public class Packet {
 
     private static long pcktId;
     private byte[] data;
+
 
     /**
      * @param src - unique number of client, must be 1 byte (This is a task)
@@ -20,19 +14,29 @@ public class Packet {
      */
     public Packet(final int src, final String message){
         try{
-            if (src > 127)
+            if (src > 255)
                 throw new IllegalArgumentException("Unique number of client must be less than 1 byte");
-        }catch (IllegalArgumentException e)
-        {
+            int packetLength = 18;
+            byte bMessage[] = message.getBytes();
+            packetLength += bMessage.length;
+
+            data = new byte[packetLength];
+            fillData(bMessage, src, packetLength);
+        }
+        catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        int packetLength = 16;
-        byte bMessage[] = message.getBytes();
-        packetLength += bMessage.length;
-        System.out.println(packetLength);
+
+    }
+
+    private void fillData(final byte bMess[], final int src, final int length) {
+
     }
 
     public static long getPcktId() {
         return pcktId;
+    }
+    public byte[] getData() {
+        return data;
     }
 }
