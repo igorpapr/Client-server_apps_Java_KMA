@@ -9,6 +9,6 @@ public class ProtocolInfo {
     public static final int O_LEN = 10;
     public static final int O_CRC_0_13 = 14;
     public static final int O_MESSAGE = 18;
-    //public final int oCRC_16_end = 18+packetLength;
+    //public final int oCRC_16_end = 18+messageLength;
 
 }
