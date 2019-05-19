@@ -29,26 +29,13 @@ public class Message {
         //byte[] messageBytes = Cryptor.getInstance().encrypt(this.message.getBytes(StandardCharsets.UTF_16BE));
         //String s = new String(messageBytes, StandardCharsets.UTF_16BE);
         //System.out.println(s);
-        byte[] messageBytes = jsonMessage.toString().getBytes(StandardCharsets.UTF_16BE);
+        byte[] messageBytes = Cryptor.encrypt(jsonMessage.toString().getBytes(StandardCharsets.UTF_16BE));
         ByteBuffer bb = ByteBuffer.allocate(8 + messageBytes.length);
         bb.order(ByteOrder.BIG_ENDIAN);
         bb.putInt(this.cType);
         bb.putInt(this.bUserId);
         bb.put(messageBytes);
-        return Cryptor.encrypt(bb.array());
+        return bb.array();
     }
-
-    public int getcType() {
-        return cType;
-    }
-
-    public int getbUserId() {
-        return bUserId;
-    }
-
-//    public JSONObject getJsonMessage() {
-//        return jsonMessage;
-//    }
-
 }
 

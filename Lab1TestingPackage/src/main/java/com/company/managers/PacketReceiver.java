@@ -9,15 +9,15 @@ import java.util.Arrays;
 
 public class PacketReceiver {
     private byte[] bytearray;
-    private String message;
-
+    private byte[] messageData;
     public PacketReceiver(byte[] packet) {
         this.bytearray = packet;
 
-        byte[] data = Cryptor.decrypt(Arrays.copyOfRange(bytearray,ProtocolInfo.O_MESSAGE,
+        messageData = Cryptor.decrypt(Arrays.copyOfRange(bytearray,ProtocolInfo.O_MESSAGE+8,
                 ProtocolInfo.O_MESSAGE +getMessageLength()));
-        String s = new String(data, StandardCharsets.UTF_16BE);
-        System.out.println(s);
+
+        //String s = new String(messageData, StandardCharsets.UTF_16BE);
+        //System.out.println(s);
     }
 
     public boolean checkSums() {
@@ -32,11 +32,11 @@ public class PacketReceiver {
         return (afterCRC_16 == beforeCRC_16);
     }
 
-    private boolean isCorrectPackageMeta() {
+    public boolean isCorrectPackageMeta() {
         return isCorrectCRC(0, ProtocolInfo.O_CRC_0_13);
     }
 
-    private boolean isCorrectMessage() {
+    public boolean isCorrectMessage() {
         return isCorrectCRC(ProtocolInfo.O_MESSAGE, ProtocolInfo.O_MESSAGE + getMessageLength());
     }
 
@@ -52,5 +52,21 @@ public class PacketReceiver {
 
     public byte[] getBytearray() {
         return bytearray;
+    }
+
+    public byte[] getMessageData() {
+        return messageData;
+    }
+
+    public int getCType(){
+        return decode(Arrays.copyOfRange(messageData,0,5));
+    }
+
+    public int getBUserId(){
+        return decode(Arrays.copyOfRange(messageData,5,9));
+    }
+
+    public String getMessageContent(){
+        return new String(Arrays.copyOfRange(messageData,0,messageData.length), StandardCharsets.UTF_16BE);
     }
 }

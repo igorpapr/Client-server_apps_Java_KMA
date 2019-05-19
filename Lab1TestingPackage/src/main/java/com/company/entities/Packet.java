@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class Packet {
@@ -16,6 +17,7 @@ public class Packet {
     private Message message;
     private int packetLength;
     private int src;
+    private int messageLength;
 
     /**
      * @param src     unique number of client app, must be 1 byte (This is a task)
@@ -54,7 +56,7 @@ public class Packet {
         packetLength = baos.size();
         bb = ByteBuffer.allocate(4);
         byte[] messageBytes = this.message.getBytes();
-        int messageLength = messageBytes.length;
+        messageLength = messageBytes.length;
         System.out.println("Message Length = " + messageLength);
         packetLength += messageLength;
         packetLength += 12; //CRCs and size of packetLength by itself - in future
@@ -84,5 +86,9 @@ public class Packet {
 
     public byte[] getData() {
         return data;
+    }
+
+    public int getMessageLength() {
+        return messageLength;
     }
 }

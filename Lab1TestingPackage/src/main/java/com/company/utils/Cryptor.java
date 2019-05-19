@@ -18,7 +18,7 @@ public class Cryptor {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 
             return cipher.doFinal(data);
-        } catch (BadPaddingException |InvalidKeyException | IllegalBlockSizeException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -28,7 +28,7 @@ public class Cryptor {
         try {
             cipher.init(Cipher.DECRYPT_MODE, secretKey, cipher.getParameters());
             return cipher.doFinal(data);
-        } catch (InvalidKeyException | InvalidAlgorithmParameterException | BadPaddingException | IllegalBlockSizeException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -49,7 +49,7 @@ public class Cryptor {
         if (cipher == null) {
             try {
                 cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            } catch (NoSuchPaddingException | NoSuchAlgorithmException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
