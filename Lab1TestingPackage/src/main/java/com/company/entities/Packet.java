@@ -23,7 +23,7 @@ public class Packet {
      * @param bUserId user id
      * @param message payload to send
      */
-    public Packet(int src, final int cType, final int bUserId, final String message) {//Serializable message
+    public Packet(int src, int cType, int bUserId, String message) {//Serializable message
         //in future there will be Message created by PacketCreator class
         try {
             if (src > 255)
