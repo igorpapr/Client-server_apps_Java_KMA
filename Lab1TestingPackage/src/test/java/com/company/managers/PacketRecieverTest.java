@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class PacketRecieverTest {
     private Packet p;
     private Packet p1;
@@ -13,10 +14,10 @@ public class PacketRecieverTest {
 
     @Before
     public void setup(){
-         p = new Packet(2,2,2,"Hello world!");
          p1 = new Packet(1,1,1,"Привіт, світ!");
-         pr = new PacketReceiver(p.getData());
+         p = new Packet(2,2,2,"Hello world!");
          pr1 = new PacketReceiver(p1.getData());
+         pr = new PacketReceiver(p.getData());
     }
 
     @Test

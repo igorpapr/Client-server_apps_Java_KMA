@@ -13,11 +13,11 @@ public class PacketReceiver {
     public PacketReceiver(byte[] packet) {
         this.bytearray = packet;
 
-        messageData = Cryptor.decrypt(Arrays.copyOfRange(bytearray,ProtocolInfo.O_MESSAGE+8,
+        this.messageData = Cryptor.decrypt(Arrays.copyOfRange(bytearray,ProtocolInfo.O_MESSAGE+8,
                 ProtocolInfo.O_MESSAGE +getMessageLength()));
 
-        //String s = new String(messageData, StandardCharsets.UTF_16BE);
-        //System.out.println(s);
+        String s = new String(messageData, StandardCharsets.UTF_16BE);
+        System.out.println(s);
     }
 
     public boolean checkSums() {

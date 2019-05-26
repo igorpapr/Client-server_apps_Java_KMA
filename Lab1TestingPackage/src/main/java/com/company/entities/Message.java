@@ -26,9 +26,6 @@ public class Message {
     }
 
     public byte[] getBytes() {
-        //byte[] messageBytes = Cryptor.getInstance().encrypt(this.message.getBytes(StandardCharsets.UTF_16BE));
-        //String s = new String(messageBytes, StandardCharsets.UTF_16BE);
-        //System.out.println(s);
         byte[] messageBytes = Cryptor.encrypt(jsonMessage.toString().getBytes(StandardCharsets.UTF_16BE));
         ByteBuffer bb = ByteBuffer.allocate(8 + messageBytes.length);
         bb.order(ByteOrder.BIG_ENDIAN);
