@@ -87,6 +87,10 @@ public class Packet {
         return data;
     }
 
+    public int getPacketLength() {
+        return packetLength;
+    }
+
     public int getMessageLength() {
         return messageLength;
     }

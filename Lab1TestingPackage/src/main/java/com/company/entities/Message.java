@@ -11,7 +11,6 @@ public class Message {
     private int cType;
     private int bUserId;
     private JSONObject jsonMessage;
-    //private String message;
 
     public Message(int cType,int bUserId,String message) {//Serializable message
         this.cType = cType;
@@ -22,7 +21,15 @@ public class Message {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //this.message = message;
+/*
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    Json.createWriter(stream).write(obj);
+
+    byte[] sendData = stream.toByteArray()
+
+    System.out.println("Bytes array: " + sendData);
+    System.out.println("As a string: " + stream.toString());
+*/
     }
 
     public byte[] getBytes() {

@@ -26,4 +26,32 @@ public class ProtocolInfo {
      * Offset of message start
      * */
     public static final int O_MESSAGE = 18;
+
+
+
+    //COMMANDS
+    /**
+     * Get amount of goods on the storage
+     */
+    public static final int C_GET_AMOUNT = 0;
+    /**
+     * Delete goods from storage
+     * */
+    public static final int C_DEL_GOODS = 1;
+    /**
+     * Add amount of goods to the storage
+     * */
+    public static final int C_ADD_GOODS = 2;
+    /**
+     * Add group of goods to the storage
+     * */
+    public static final int C_ADD_GROUP = 3;
+    /**
+     * Add group title
+     * */
+    public static final int C_ADD_GROUP_TITLE = 4;
+    /**
+     * Set price of the goods
+     * */
+    public static final int C_SET_PRICE = 5;
 }

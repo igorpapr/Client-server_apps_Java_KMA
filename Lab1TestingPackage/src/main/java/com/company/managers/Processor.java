@@ -4,8 +4,8 @@ import com.company.entities.Message;
 
 public class Processor {
 
-    void process(Message message)
-    {
+    void process(Message message) {
+
         return;
     }
 }
