@@ -11,8 +11,9 @@ public class Message {
     private int cType;
     private int bUserId;
     private JSONObject jsonMessage;
+    private boolean toEncrypt = true;
 
-    public Message(int cType,int bUserId,String message) {//Serializable message
+    public Message(int cType, int bUserId, String message) {//Serializable message
         this.cType = cType;
         this.bUserId = bUserId;
         try {
@@ -33,13 +34,39 @@ public class Message {
     }
 
     public byte[] getBytes() {
-        byte[] messageBytes = Cryptor.encrypt(jsonMessage.toString().getBytes(StandardCharsets.UTF_16BE));
-        ByteBuffer bb = ByteBuffer.allocate(8 + messageBytes.length);
+        byte[] res;
+        byte[] payloadBytes = jsonMessage.toString().getBytes(StandardCharsets.UTF_16BE);
+        ByteBuffer bb = ByteBuffer.allocate(8 + payloadBytes.length);
         bb.order(ByteOrder.BIG_ENDIAN);
         bb.putInt(this.cType);
         bb.putInt(this.bUserId);
-        bb.put(messageBytes);
-        return bb.array();
+        bb.put(payloadBytes);
+        if (toEncrypt) {
+            res = Cryptor.encrypt(bb.array());
+        }else {
+            res = bb.array();
+        }
+        return res;
+    }
+
+    public boolean isToEncrypt() {
+        return toEncrypt;
+    }
+
+    public void setToEncrypt(boolean toEncrypt) {
+        this.toEncrypt = toEncrypt;
+    }
+
+    public int getcType() {
+        return cType;
+    }
+
+    public int getbUserId() {
+        return bUserId;
+    }
+
+    public JSONObject getJsonMessage() {
+        return jsonMessage;
     }
 }
 

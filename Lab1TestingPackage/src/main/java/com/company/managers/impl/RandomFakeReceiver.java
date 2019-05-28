@@ -36,7 +36,8 @@ public class RandomFakeReceiver implements IReceiver {
         new Thread(){
             @Override
             public void run(){
-                Decriptor.getInstance().decrypt(Arrays.copyOfRange(p.getData(),ProtocolInfo.O_MESSAGE+8,
+                System.out.println("Start of " + this.getName());
+                Decriptor.getInstance().decrypt(Arrays.copyOfRange(p.getData(),ProtocolInfo.O_MESSAGE,
                         ProtocolInfo.O_MESSAGE + p.getMessageLength()));
             }
         }.start();

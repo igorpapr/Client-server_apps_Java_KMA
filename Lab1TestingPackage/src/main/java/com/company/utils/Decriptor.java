@@ -1,6 +1,7 @@
 package com.company.utils;
 
 import com.company.entities.Message;
+import com.company.managers.Processor;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -39,13 +40,15 @@ public class Decriptor{
             byte[] decrypted = this.cipher.doFinal(input);
             int cType = decode(Arrays.copyOfRange(decrypted,0,5));
             int bUserId = decode(Arrays.copyOfRange(decrypted,5,9));
-            Message message = new Message(cType,bUserId,new String(Arrays.copyOfRange(decrypted,9,decrypted.length), StandardCharsets.UTF_16BE));
+            Message message = new Message(cType, bUserId, new String(Arrays.copyOfRange(decrypted,9,
+                                                            decrypted.length), StandardCharsets.UTF_16BE));
 
+            Processor p = new Processor();
+            p.process(message);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     private static int decode(byte[] bi) {
         return bi[3] & 0xFF | (bi[2] & 0xFF) << 8 |
