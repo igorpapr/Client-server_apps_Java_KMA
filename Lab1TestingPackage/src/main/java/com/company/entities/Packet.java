@@ -25,12 +25,11 @@ public class Packet {
      * @param message payload to send
      */
     public Packet(int src, int cType, int bUserId, String message) {//Serializable message
-        //in future there will be Message created by PacketCreator class
         try {
             if (src > 255)
                 throw new IllegalArgumentException("Unique number of client must be less than 1 byte");
             this.src = src;
-            this.message = new Message(cType, bUserId, message); //in future there will be Message created by PacketCreator class
+            this.message = new Message(cType, bUserId, message);
 
             data = fillData();
             pcktId++;
@@ -93,5 +92,13 @@ public class Packet {
 
     public int getMessageLength() {
         return messageLength;
+    }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public int getSrc() {
+        return src;
     }
 }

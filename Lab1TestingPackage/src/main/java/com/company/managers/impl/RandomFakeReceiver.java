@@ -33,11 +33,16 @@ public class RandomFakeReceiver implements IReceiver {
                 break;
         }
         Packet p = new Packet((int)(Math.random() * 100), command, (int)(Math.random() * 10),Integer.toString((int)(10 + Math.random() * 40)));
+        System.out.println("= = = = = = = = = =\nGenerated src: " + p.getSrc());
+        System.out.println("Generated command: " + command);
+        System.out.println("Generated bUserId: " + p.getMessage().getbUserId());
+        System.out.println("Generated message: " + p.getMessage().getJsonMessage().toString());
+        System.out.println("= = = = = = = = = =");
         new Thread(){
             @Override
             public void run(){
                 System.out.println("Start of " + this.getName());
-                Decriptor.getInstance().decrypt(Arrays.copyOfRange(p.getData(),ProtocolInfo.O_MESSAGE,
+                Decriptor.getInstance().decrypt(Arrays.copyOfRange(p.getData(), ProtocolInfo.O_MESSAGE,
                         ProtocolInfo.O_MESSAGE + p.getMessageLength()));
             }
         }.start();

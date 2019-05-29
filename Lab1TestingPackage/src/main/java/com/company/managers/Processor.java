@@ -1,7 +1,6 @@
 package com.company.managers;
 
 import com.company.entities.Message;
-import com.company.entities.Packet;
 import com.company.utils.Encriptor;
 
 public class Processor {
