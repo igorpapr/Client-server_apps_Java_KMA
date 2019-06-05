@@ -28,6 +28,20 @@ public class Message {
         }
     }
 
+
+    public Message(byte[] data){
+        this.cType = ByteBuffer.wrap(data,0,4).getInt();
+        this.bUserId = ByteBuffer.wrap(data,4,4).getInt();
+        try {
+            String mess = StandardCharsets.UTF_16BE.decode(ByteBuffer.wrap(data,8,data.length-8))
+                    .toString();
+
+            jsonMessage = new JSONObject(mess);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public Message(int cType, int bUserId, JSONObject message) {
         this.cType = cType;
         this.bUserId = bUserId;
@@ -48,6 +62,7 @@ public class Message {
         //System.out.println(new String(Arrays.copyOfRange(bb.array(),9,bb.array().length),StandardCharsets.UTF_8));
         if (toEncrypt) {
             res = Encriptor.getInstance().getEncrypted(bb.array());
+            System.out.println("Message was encrypted");
         }else {
             res = bb.array();
         }

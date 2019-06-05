@@ -7,6 +7,7 @@ import com.company.utils.ProtocolInfo;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+@Deprecated
 public class PacketReceiver {
     private byte[] bytearray;
     private byte[] messageData;

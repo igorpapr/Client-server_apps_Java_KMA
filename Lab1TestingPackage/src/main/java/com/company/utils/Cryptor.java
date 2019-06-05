@@ -4,6 +4,7 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+@Deprecated
 public class Cryptor {
     private static SecretKey secretKey;
     private static Cipher cipher;

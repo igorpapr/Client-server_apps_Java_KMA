@@ -23,7 +23,7 @@ public class CipherObject {
 
     public byte[] encrypt(byte[] bytes) {
         try {
-            this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
+            this.cipher.init(Cipher.ENCRYPT_MODE, this.key, this.cipher.getParameters());
             return this.cipher.doFinal(bytes);
         } catch (Exception e) {
             e.printStackTrace();

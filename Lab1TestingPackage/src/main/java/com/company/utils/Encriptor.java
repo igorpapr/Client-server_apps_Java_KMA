@@ -23,13 +23,14 @@ public class Encriptor {
         }
     }
 
-    public void encrypt(byte[] bytes) {
+    public void encryptAndSend(byte[] bytes) {
         try {
             //this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
 
-            Sender sender = new Sender();
+            Sender sender = new Sender(CipherObject.getInstance().encrypt(bytes));
             //sender.send(this.cipher.doFinal(bytes), InetAddress.getLoopbackAddress()); //FAKE ADDRESS!!!!!!!!!!!!!!!!!!!!
-            sender.send(CipherObject.getInstance().encrypt(bytes), InetAddress.getLoopbackAddress());
+            //sender.send(InetAddress.getLoopbackAddress(), PORT); //TODO address FIX
+
         } catch (Exception e) {
             e.printStackTrace();
         }

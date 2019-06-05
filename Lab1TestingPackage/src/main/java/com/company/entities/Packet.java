@@ -17,6 +17,7 @@ public class Packet {
     private int packetLength;
     private int src;
     private int messageLength;
+    private boolean toCipher; //to use cypher or not
 
     /**
      * @param src     unique number of client app, must be 1 byte (This is a task)
@@ -24,12 +25,13 @@ public class Packet {
      * @param bUserId user id
      * @param message payload to send
      */
-    public Packet(int src, int cType, int bUserId, String message) {//Serializable message
+    public Packet(int src, int cType, int bUserId, String message, boolean toCipher) {//Serializable message
         try {
             if (src > 255)
                 throw new IllegalArgumentException("Unique number of client must be less than 1 byte");
             this.src = src;
             this.message = new Message(cType, bUserId, message);
+            this.message.setToEncrypt(toCipher);
 
             data = fillData();
             pcktId++;
@@ -38,6 +40,9 @@ public class Packet {
         }
     }
 
+    public Packet(int src, int cType, int bUserId, String message){
+        this(src,cType,bUserId,message,true);
+    }
 
     /**
      * @return packed array of bytes of everything of our packet

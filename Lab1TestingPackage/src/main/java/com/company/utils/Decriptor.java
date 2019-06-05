@@ -9,7 +9,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Arrays;
 
 import static java.nio.charset.StandardCharsets.UTF_16BE;
 
@@ -28,11 +27,13 @@ public class Decriptor{
         }
     }
 
-    public void decrypt(byte[] input) {
+    public Message decryptAndProcess(byte[] input) {
         try {
             //this.cipher.init(Cipher.DECRYPT_MODE, this.key, this.cipher.getParameters());
             //byte[] decrypted = this.cipher.doFinal(input);
-            byte[] decrypted = CipherObject.getInstance().decrypt(input);
+
+            //byte[] decrypted = CipherObject.getInstance().decrypt(input); //TODO in future!!!!
+            byte[] decrypted = input;                                       //TODO
 
             int cType = ByteBuffer.wrap(decrypted,0,4).getInt();
             System.out.println("Decrypted cType: " + cType);
@@ -44,11 +45,14 @@ public class Decriptor{
             JSONObject j = new JSONObject(mess);
             Message message = new Message(cType, bUserId,j);
             System.out.println("Decrypted payload: " + message.getJsonMessage().toString());
-            Processor p = new Processor();
-            p.process(message);
+
+            return message;
+//            Processor p = new Processor();
+//            p.process(message);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public byte[] getDecrypted(byte[] input) {
@@ -60,11 +64,6 @@ public class Decriptor{
         }
         return null;
 //        return CipherObject.getInstance().decrypt(input);
-    }
-
-    private static int decode(byte[] bi) {
-        return bi[3] & 0xFF | (bi[2] & 0xFF) << 8 |
-                (bi[1] & 0xFF) << 16 | (bi[0] & 0xFF) << 24;
     }
 
     public static Decriptor getInstance() {
