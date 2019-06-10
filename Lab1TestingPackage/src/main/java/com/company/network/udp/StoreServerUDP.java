@@ -1,9 +1,14 @@
 package com.company.network.udp;
 
+import com.company.entities.Message;
+import com.company.managers.Sender;
 import com.company.managers.impl.ReceiverUDP;
+import com.company.utils.ProtocolInfo;
+import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
 
 import java.io.IOException;
 import java.net.*;
+import java.nio.ByteBuffer;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -25,7 +30,7 @@ public class StoreServerUDP {
 
         byte[] receiveData = new byte[1024];
         byte[] sendData;
-
+        System.out.println("< Started UDP server >");
         while(true)
         {
             String sentence = "Received packet {UDP}";
@@ -53,7 +58,16 @@ public class StoreServerUDP {
                 //}catch (Exception e){
                 //    e.printStackTrace();
                 //}
-            }catch (Exception e){
+            }catch (ValueException e){
+                try {
+                    Message m = new Message(-1,-1,String.valueOf(ByteBuffer.wrap(receivePacket.getData(),ProtocolInfo.O_PKTID, 8).getLong()));
+                    m.setToEncrypt(false);
+                    Sender s = new Sender(m.getBytes());
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }

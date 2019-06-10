@@ -18,17 +18,25 @@ public class StoreClientTCPThread extends Thread{
     private int id = counter++;
     private static int threadcount = 0;
 
-    public StoreClientTCPThread(InetAddress addr) {
-        System.out.println("Запустимо клієнт з номером " + id);
+    private final int MAX_TRIES = 5;
+
+    public StoreClientTCPThread(InetAddress addr) throws InterruptedException {
+        System.out.println("Starting client number " + id);
         threadcount++;
-        try {
-            socket = new Socket(addr, StoreServerTCP.PORT);
+        for (int i = 0; i < MAX_TRIES; i++){
+            try {
+                socket = new Socket(addr, StoreServerTCP.PORT);
+                break;
+            }
+            catch (IOException e) {
+                System.err.println("Couldn't connect to the server: " + i);
+                Thread.sleep(1000);
+                if (i == MAX_TRIES - 1){
+                    return;
+                }
+            }
         }
-        catch (IOException e) {
-            System.err.println("Не вдалося з'єднатися з сервером");
-            // Якщо не вдалося створити сокер нічого
-            // не потрібно чистити
-        }
+
         try {
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());

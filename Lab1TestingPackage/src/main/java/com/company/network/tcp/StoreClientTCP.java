@@ -11,7 +11,7 @@ public class StoreClientTCP {
         while (true) {
             if (StoreClientTCPThread.threadCount() < MAX_THREADS)
                 new StoreClientTCPThread(addr);
-            Thread.currentThread().sleep(100);
+            Thread.sleep(100);
         }
     }
 
